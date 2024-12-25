@@ -17,5 +17,4 @@ echo "Query example:"
 cat example.sql
 echo
 echo "Query result:"
-sqlite3 -cmd ".mode column" -cmd ".headers on" -cmd ".width 9 4 8 9 10"\
-	$DB_PATH < example.sql
+sqlite3 -cmd ".mode column" -cmd ".headers on" $DB_PATH < example.sql
