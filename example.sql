@@ -1,7 +1,9 @@
 SELECT
-s.min_score, r.rank, p.plan_num, s.inst, s.major, s.inst_code, s.major_code
+s.min_score, r.rank, p.plan_num, s.inst_code, s.major_code,
+substr(s.inst || ' ' || s.major, 1, 15) AS inst_major
 FROM plan_2024 AS p JOIN score_phy2024 AS s JOIN rank_phy2024 AS r
-ON p.inst_code = s.inst_code AND p.major_code = s.major_code AND s.min_score = r.score
+ON p.inst_code = s.inst_code AND p.major_code = s.major_code
+AND s.min_score = r.score
 WHERE
 p.FIRST LIKE '%物%'
 AND (
@@ -23,5 +25,5 @@ AND (
 	OR p.major LIKE '%信息%'
 	OR p.major LIKE 自动化%'
 )
-*/
+ */
 ORDER BY s.min_score DESC;
