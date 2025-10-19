@@ -19,7 +19,7 @@
       "command": "uvx",
       "args": [
         "--directory",
-        "/Users/mengbo/github/ln-admission-db",
+        "/Users/mengbo/Developer/github/ln-admission-db",
         "mcp-server-sqlite",
         "--db-path",
         "./data.sqlite3"

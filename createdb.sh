@@ -4,29 +4,10 @@ DB_PATH="./data.sqlite3"
 
 rm -rf $DB_PATH
 
-for CSV_FILE in plan_*.csv; do
+# 直接导入所有CSV文件，让SQLite自动创建表并使用CSV第一行作为字段名
+for CSV_FILE in *.csv; do
 	TABLE_NAME=$(basename -- "$CSV_FILE" .csv)
 	echo "Importing $CSV_FILE to $TABLE_NAME..."
-	sqlite3 $DB_PATH "CREATE TABLE $TABLE_NAME 
-		( batch TEXT, first TEXT, second TEXT, inst_code TEXT,
-		inst TEXT, major_code TEXT, major TEXT, plan_num INTEGER);"
-	sqlite3 $DB_PATH ".import --csv $CSV_FILE $TABLE_NAME"
-	echo "Import completed for $CSV_FILE."
-done
-
-for CSV_FILE in rank_*.csv; do
-	TABLE_NAME=$(basename -- "$CSV_FILE" .csv)
-	echo "Importing $CSV_FILE to $TABLE_NAME..."
-	sqlite3 $DB_PATH "CREATE TABLE $TABLE_NAME (score INTEGER, number INTEGER, rank INTEGER);"
-	sqlite3 $DB_PATH ".import --csv $CSV_FILE $TABLE_NAME"
-	echo "Import completed for $CSV_FILE."
-done
-
-for CSV_FILE in score_*.csv; do
-	TABLE_NAME=$(basename -- "$CSV_FILE" .csv)
-	echo "Importing $CSV_FILE to $TABLE_NAME..."
-	sqlite3 $DB_PATH "CREATE TABLE $TABLE_NAME 
-		(inst_code TEXT, inst TEXT, major_code TEXT, major TEXT, min_score INTEGER);"
 	sqlite3 $DB_PATH ".import --csv $CSV_FILE $TABLE_NAME"
 	echo "Import completed for $CSV_FILE."
 done
