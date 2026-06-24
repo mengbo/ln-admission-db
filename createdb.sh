@@ -13,11 +13,3 @@ for CSV_FILE in *.csv; do
 done
 
 echo "All CSV files have been imported into the database."
-echo
-echo "Query example:"
-cat example.sql
-echo
-echo "Press Enter to see the query results..."
-read -r
-sqlite3 -cmd ".mode csv" -cmd ".headers on" \
-	$DB_PATH < example.sql | column -s, -t | less -S
