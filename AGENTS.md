@@ -3,21 +3,21 @@
 ## 参考文件
 
 整个项目的描述件 [README.md](./README.md)。
-数据库结构见文件 [db_schema.md](./db_schema.md)。
-通过 MCP 协议使用 SQLite 的可选方案见 [MCP.md](./MCP.md)。
+数据库结构见文件 [db_schema.md](./docs/db_schema.md)。
+通过 MCP 协议使用 SQLite 的可选方案见 [MCP.md](./docs/MCP.md)。
 
 ## 构建/设置命令
-- `./createdb.sh` - 创建 SQLite 数据库并导入所有 CSV 数据
-- `./exp_phy2024.sh` - 运行 2024 年物理类数据示例查询
+- `./scripts/createdb.sh` - 创建 SQLite 数据库并导入所有 CSV 数据
+- `./scripts/exp_phy2024.sh` - 运行 2024 年物理类数据示例查询
 - `sqlite3 data.sqlite3` - 直接打开数据库进行查询
-- `sqlite3 -cmd ".mode csv" -cmd ".headers on" data.sqlite3 < query.sql` - 运行 SQL 文件并以 CSV 格式输出
+- `sqlite3 -cmd ".mode csv" -cmd ".headers on" data.sqlite3 < queries/query.sql` - 运行 SQL 文件并以 CSV 格式输出
 
 ## 查询方式约定
 
 **本项目直接使用 `sqlite3` 命令行工具进行数据查询，不使用 MCP sqlite 工具。**
 
 理由：
-- `sqlite3` 命令行与现有 shell 脚本（如 `exp_phy2024.sh`）风格一致
+- `sqlite3` 命令行与现有 shell 脚本（如 `scripts/exp_phy2024.sh`）风格一致
 - SQL 语句可保存为文件复用、便于版本管理
 - 无 MCP 协议开销，响应更快
 - 任何能执行 shell 的环境都能用
@@ -46,7 +46,7 @@ sqlite3 -header -column data.sqlite3 < query.sql
 
 ## 代码风格指南
 - **重要：所有交互过程、注释和文档必须使用中文，本项目为中文项目**
-- **优先使用 `sqlite3` 命令行进行数据查询，不使用 MCP sqlite 工具**（如需 MCP 方案请参考 [MCP.md](./MCP.md)）
+- **优先使用 `sqlite3` 命令行进行数据查询，不使用 MCP sqlite 工具**（如需 MCP 方案请参考 [MCP.md](./docs/MCP.md)）
 - SQL 查询应使用正确的 JOIN 语法和表别名（如 `p`, `s`, `r`）
 - 遵循现有表命名规范：`plan_YYYY`, `rank_hisYYYY`, `rank_phyYYYY`, `score_hisYYYY`, `score_phyYYYY`
 - 使用描述性列名匹配模式：`inst_code`, `major_code`, `min_score`, `plan_num`

@@ -1,8 +1,11 @@
 #!/bin/bash
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+
 year=2024
 
-sqlite3 -cmd ".mode csv" -cmd ".head on" data.sqlite3 << EOF
+sqlite3 -cmd ".mode csv" -cmd ".head on" "$PROJECT_ROOT/data.sqlite3" << EOF
 SELECT
 s.min_score, r.rank, p.plan_num, s.inst_code, s.major_code,
 s.inst || ' ' || s.major AS inst_major
@@ -18,4 +21,3 @@ AND (
 )
 ORDER BY s.min_score DESC;
 EOF
-

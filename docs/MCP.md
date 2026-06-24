@@ -28,10 +28,10 @@
 
 通过类似如下的提示词，就可以使用人工智能来分析数据：
 
-> 使用中文。@/db_schema.md 是 mcp server 连接的数据库的描述。从数据库中总结一下2023年和2024年南京大学物理类的录取情况。首先获取各个专业招生人数，然后获取各个专业录取最低分，最后找到这个最低分的省内排名。
+> 使用中文。@/docs/db_schema.md 是 mcp server 连接的数据库的描述。从数据库中总结一下2023年和2024年南京大学物理类的录取情况。首先获取各个专业招生人数，然后获取各个专业录取最低分，最后找到这个最低分的省内排名。
 
-![AI Screenshot](https://github.com/mengbo/ln-admission-db/blob/main/screenshot_ai.png?raw=true)
+![AI Screenshot](https://github.com/mengbo/ln-admission-db/blob/main/assets/screenshot_ai.png?raw=true)
 
 [Cherry Studio](https://cherry-ai.com/) 作为支持 MCP 的客户端软件，界面更加友好，建议使用。
 
-![Cherry Studio](https://github.com/mengbo/ln-admission-db/blob/main/screenshot_cs.png?raw=true)
+![Cherry Studio](https://github.com/mengbo/ln-admission-db/blob/main/assets/screenshot_cs.png?raw=true)
