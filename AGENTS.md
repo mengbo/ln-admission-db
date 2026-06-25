@@ -2,9 +2,9 @@
 
 ## 参考文件
 
-整个项目的描述件 [README.md](./README.md)。
-数据库结构见文件 [db_schema.md](./docs/db_schema.md)。
-通过 MCP 协议使用 SQLite 的可选方案见 [MCP.md](./docs/MCP.md)。
+整个项目的描述见 [README.md](./README.md)。
+数据库结构见 [docs/db_schema.md](./docs/db_schema.md)。
+MCP 协议方案（已不推荐）见 [docs/MCP.md](./docs/MCP.md)。
 
 ## 构建/设置命令
 - `./scripts/createdb.sh` - 创建 SQLite 数据库并导入所有 CSV 数据
@@ -46,7 +46,7 @@ sqlite3 -header -column data.sqlite3 < query.sql
 
 ## 代码风格指南
 - **重要：所有交互过程、注释和文档必须使用中文，本项目为中文项目**
-- **优先使用 `sqlite3` 命令行进行数据查询，不使用 MCP sqlite 工具**（如需 MCP 方案请参考 [MCP.md](./docs/MCP.md)）
+- **优先使用 `sqlite3` 命令行进行数据查询，不使用 MCP sqlite 工具**（如需 MCP 方案请参考 [docs/MCP.md](./docs/MCP.md)）
 - SQL 查询应使用正确的 JOIN 语法和表别名（如 `p`, `s`, `r`）
 - 遵循现有表命名规范：`plan_YYYY`, `rank_hisYYYY`, `rank_phyYYYY`, `score_hisYYYY`, `score_phyYYYY`
 - 使用描述性列名匹配模式：`inst_code`, `major_code`, `min_score`, `plan_num`
@@ -58,6 +58,51 @@ sqlite3 -header -column data.sqlite3 < query.sql
 - SQL 格式化应使用适当的缩进和一致的列顺序
 - 数值范围使用 `BETWEEN`，模式匹配使用 `LIKE` 与 `%`
 - 复杂的 WHERE 子句和过滤逻辑应包含注释（`--`）
+
+## 🤖 AI Agent 辅助报考工作流
+
+### 推荐工具
+
+- **[OpenCode](https://opencode.ai)** / **Claude Code**：本地 shell 即可调 `sqlite3`，零额外配置，响应快。
+- 不推荐：Cline / Cherry Studio 通过 MCP 协议接入，仅作历史参考，详见 [docs/MCP.md](./docs/MCP.md)。
+
+> 推荐理由：Agent 拥有 shell 执行权，可以直接运行 `sqlite3` 命令；省去 MCP 协议握手、SQL 写入与回读的开销，更稳定。
+
+### Agent 调 sqlite3 的最佳实践
+
+1. **可读输出**：用 `-header -column` 让 Agent 更易解析。
+   ```bash
+   sqlite3 -header -column data.sqlite3 "SELECT ..."
+   ```
+2. **多行 SQL 用 heredoc**：避免 shell 转义地狱。
+   ```bash
+   sqlite3 -header -column data.sqlite3 <<'EOF'
+   SELECT ...
+   WHERE ...
+   EOF
+   ```
+3. **大结果集分页**：`LIMIT 50 OFFSET 100` 配合 `COUNT(*)` 估计总量。
+4. **编码**：CSV 默认 UTF-8，shell 终端需支持中文（建议 `LANG=zh_CN.UTF-8`）。
+5. **结果落盘**：复杂结果重定向到 `/tmp/result.csv` 便于 Agent 反复读取。
+
+### 常见坑
+
+- `plan_YYYY.first` 的值是"物理" / "历史"，用 `LIKE '%物%'` 匹配物理类。
+- `plan_YYYY.second` 表述多样（"化学""化学或生物""不限"），用 `LIKE '%化%'` `LIKE '%生%'` `LIKE '%不限%'` 组合匹配。
+- `score_phyYYYY` 与 `plan_YYYY` 用 `inst_code` + `major_code` 关联，**`inst` + `major` 文本不一致**时一定要用编码。
+- `rank_phyYYYY.score` 类型是 TEXT，比较时用 `CAST(score AS INTEGER)` 避免字典序问题。
+- 同一专业在不同年份可能换编码，跨年比较时要校验。
+- `score_his2022` 不存在，分析历史类时仅能从 2023 起。
+
+## 🚩 考生信息清单（精简版）
+
+向 Agent 提问前先整理：基本信息 / 专业好恶 / 地理位置 / 家庭背景与社会关系 / 经济与学制 / 就业偏好 / 身体与特殊条件。  
+完整 7 大类问题见 [README.md#使用前必读考生信息清单](./README.md#-使用前必读考生信息清单)。
+
+## 💬 提示词模板（精简版）
+
+5 条模板与 6 轮对话完整版见 [README.md#提示词模板库](./README.md#-提示词模板库)。  
+**强烈建议完整跑一遍 6 轮对话**，可生成可打印的志愿表。
 
 ## 数据库分析经验
 
