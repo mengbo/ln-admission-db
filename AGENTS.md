@@ -313,6 +313,15 @@ SQL 查询时按"今年"的具体年份替换 `YYYY`：
 
 主工作流是 `templates/question.md` → `templates/report.md` 一次完成，单点提问模板只用于"只想问一个具体问题"的场景。
 
+### 📌 AGENTS.md 与 templates/report.md 的职责划分
+
+| 文件 | 角色 | 内容 |
+|---|---|---|
+| **AGENTS.md**（本文件） | AI 内部规则手册 | 所有方法论：SQL、等效分换算流程、候选池建立、AI 评分原则、分批打分、防投机取巧、排序规则等 |
+| **[templates/report.md](../templates/report.md)** | 家长看到的报告模板 | 只输出结果：声明、考生信息、等效分换算表、200 行志愿推荐表、院校简介、简短免责 |
+
+**关键原则**：AI 按 AGENTS.md 的方法论执行，按 report.md 的格式输出结果。**报告中不输出方法论**——不写 SQL、不写评分维度表、不写候选池建立过程、不写分批打分机制、不写 CSV 格式约定。家长只需要看到结果，不需要知道"香肠怎么做的"。
+
 ### 多轮收集信息（AI 主动追问）
 
 如果考生只在对话里给了一部分信息（例如只说了分数，没说选科组合），**不要因为信息不全就拒绝生成方案，也不要让家长去翻 `question.md` 自己填**。AI 应主动按 [templates/question.md](../templates/question.md) 的字段逐项追问，每次问 1-3 个尚未明确的字段，凑齐后按 [templates/report.md](../templates/report.md) 输出志愿填报方案。
