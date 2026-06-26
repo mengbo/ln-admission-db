@@ -3,7 +3,7 @@
 辽宁省高考招生本地化数据库 + AI Agent 辅助报考工具包。
 
 - 📊 **本地离线**：2022–2026 招生计划、录取分数、一分一段表打包进单个 SQLite 文件，零网络依赖。
-- 🤖 **AI 辅助**：配合 [OpenCode](https://opencode.ai) / Claude Code 等 Agent，用自然语言提问即可自动跑 SQL、生成冲稳保清单。
+- 🤖 **AI 辅助**：配合 [OpenCode](https://opencode.ai) / Claude Code 等 Agent，用自然语言提问即可自动跑 SQL、生成志愿清单。
 - 📝 **问卷 → 方案**：填写 [templates/question.md](./templates/question.md) 一份问卷，AI 一次性按 [templates/report.md](./templates/report.md) 输出可打印的志愿填报方案。
 
 ![OpenCode 报考助力示例](https://github.com/mengbo/ln-admission-db/blob/main/assets/screenshot_oc.png?raw=true)
