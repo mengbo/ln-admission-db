@@ -6,3 +6,6 @@ reports/
 
 # 备份文件
 *.bak
+
+# Python 虚拟环境（uv 管理）
+.venv/

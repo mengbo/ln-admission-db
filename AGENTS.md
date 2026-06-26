@@ -42,6 +42,57 @@ MCP 协议方案（已不推荐）见 [docs/MCP.md](./docs/MCP.md)。
 - `sqlite3 data.sqlite3` - 直接打开数据库进行查询
 - `sqlite3 -cmd ".mode csv" -cmd ".headers on" data.sqlite3 < queries/query.sql` - 运行 SQL 文件并以 CSV 格式输出
 
+## 🐍 Python 虚拟环境（uv 管理）
+
+> **核心原则：永远不要用系统 `pip install` 装包——所有 Python 依赖一律走 `uv` 虚拟环境。**
+
+### 环境已配好
+
+项目根目录已有 `.venv/`（已被 `.gitignore` 忽略），里面装了导出转换所需的依赖。
+
+### 常用命令
+
+```bash
+# 用 venv 里的 python 运行脚本（推荐——不用手动 activate）
+.venv/bin/python scripts/csv2xlsx.py input.csv output.xlsx
+
+# 也可以 activate 后直接用
+source .venv/bin/activate
+python scripts/csv2xlsx.py input.csv output.xlsx
+deactivate
+
+# 往 venv 里加新依赖（仍然不走系统 pip）
+uv pip install 包名
+
+# 从零重建 venv（万一 .venv 被删了或搞坏了）
+uv venv .venv --python 3.12 && uv pip install openpyxl markdown
+```
+
+### 当前已装的包
+
+| 包 | 用途 |
+|---|---|
+| `openpyxl` | CSV → XLSX 转换（生成 Excel 报告） |
+| `markdown` | MD → HTML 转换（配合 Chrome headless 出 PDF） |
+
+### MD → PDF 转换
+
+MD → PDF 不走 Python，直接用 Chrome headless（系统自带，零依赖）：
+
+```bash
+# 例：把 reports/xxx.md 转成 PDF
+/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome \
+  --headless --disable-gpu --print-to-pdf=output.pdf \
+  --no-pdf-header-footer input.html
+```
+
+### 反例
+
+- ❌ `pip install openpyxl`（污染系统环境）
+- ❌ `pip3 install xxx`（同上）
+- ❌ `python -m pip install xxx`（同上）
+- ✅ `uv pip install xxx`（只装到 `.venv`）
+
 ## 查询方式约定
 
 **本项目直接使用 `sqlite3` 命令行工具进行数据查询，不使用 MCP sqlite 工具。**
