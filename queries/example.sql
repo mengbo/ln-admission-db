@@ -23,7 +23,7 @@ AND (
 AND (
 	p.major LIKE '%计算机%'
 	OR p.major LIKE '%信息%'
-	OR p.major LIKE 自动化%'
+	OR p.major LIKE '%自动化%'
 )
  */
 ORDER BY s.min_score DESC;
